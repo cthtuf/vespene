@@ -17,10 +17,7 @@ import os
 from django.utils import timezone
 from django.conf import settings
 
-from vespene.common.logger import Logger
 from vespene.models.worker import Worker
-
-LOG = Logger()
 
 WORKER_ID_FILE = "/etc/vespene/worker_id"
 

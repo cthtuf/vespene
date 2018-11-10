@@ -99,7 +99,36 @@ USE_TZ = True
 STATIC_URL = STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 
-LOG_LEVEL='DEBUG'
+LOG_LEVEL = 'DEBUG'
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'common': {
+            'format': '{asctime}\t{name}\t{levelname}\t{message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'common',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'propagate': True,
+        },
+        'vespene': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': True,
+        },
+    },
+}
+
 
 # you should not install Vespene to be publically accessible but
 # if you do ignore that advice, change this to include internal domain

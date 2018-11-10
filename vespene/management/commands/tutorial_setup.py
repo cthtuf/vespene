@@ -18,9 +18,6 @@ from vespene.models.stage import Stage
 from vespene.models.snippet import Snippet
 from vespene.models.variable_set import VariableSet
 from vespene.models.worker_pool import WorkerPool
-from vespene.common.logger import Logger
-
-LOG = Logger()
 
 EXAMPLE_REPO = "git@github.com:mpdehaan/foo.git"
 

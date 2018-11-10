@@ -6,14 +6,13 @@
 #  or use SSH-based automation. This is mostly handled right now
 #  through basic expect scripts and does support password-locked keys.
 #  --------------------------------------------------------------------------
-
+from logging import getLogger
 import os
 import tempfile
 
-from vespene.common.logger import Logger
 from vespene.workers import commands
 
-LOG = Logger()
+LOG = getLogger(__name__)
 
 # =============================================================================
 
@@ -44,12 +43,12 @@ class SshAgentManager(object):
 
 
             if access.unlock_password:
-                LOG.debug("adding SSH key with passphrase!")
+                LOG.debug("Adding SSH key with passphrase!")
                 self.ssh_add_with_passphrase(keyfile, access.get_unlock_password())
             else:
                 if ',ENCRYPTED' in private:
                     raise Exception("SSH key has a passphrase but an unlock password was not set. Aborting")
-                LOG.debug("adding SSH key without passphrase!")
+                LOG.debug("Adding SSH key without passphrase!")
                 self.ssh_add_without_passphrase(keyfile)
         finally:
             os.remove(keyfile)
@@ -58,7 +57,7 @@ class SshAgentManager(object):
   
     def cleanup(self):
         # remove SSH identities
-        LOG.debug("removing SSH identities")
+        LOG.debug("Removing SSH identities")
         commands.execute_command(self.build, "ssh-add -D", log_command=False, message_log=False, output_log=False)    
 
     def ssh_add_without_passphrase(self, keyfile):  

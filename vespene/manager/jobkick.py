@@ -15,7 +15,6 @@ from django.utils import timezone
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 
-from vespene.common.logger import Logger
 from vespene.models.build import ABORTING, FAILURE, QUEUED, Build
 from vespene.models.project import Project
 from vespene.common.variables import VariableManager
@@ -23,7 +22,6 @@ from vespene.common.templates import template
 from vespene.manager.permissions import PermissionsManager
 
 permissions = PermissionsManager()
-LOG = Logger()
 
 # TODO: convert all Exceptions to typed exceptions
 

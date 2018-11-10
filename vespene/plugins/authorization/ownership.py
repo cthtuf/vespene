@@ -9,10 +9,7 @@
 from django.db.models import Q
 from django.core.exceptions import ValidationError
 from django.contrib import messages
-from vespene.common.logger import Logger
 from vespene.manager import Shared
-
-LOG = Logger()
 
 # This is a particularly involved authentication ownership filter that has the following behavior:
 # 
@@ -21,6 +18,7 @@ LOG = Logger()
 # - Projects, Pipelines, and Builds can be launched if ownership is available of those items
 #  but ownership of the SSH Keys and Service Logins assigned is not required.
 #  Build ownership looks to the project.
+
 
 class Plugin(object):
 

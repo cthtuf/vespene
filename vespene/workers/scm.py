@@ -5,10 +5,8 @@
 #  for various source control providers is contained in 'plugins/scm'.
 #  --------------------------------------------------------------------------
 
-from vespene.common.logger import Logger
 from vespene.common.plugin_loader import PluginLoader
 from vespene.plugins.scm.none import Plugin as NoScmPlugin
-LOG = Logger()
 
 # =============================================================================
 

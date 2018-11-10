@@ -7,14 +7,14 @@
 #  to move the configuration strings out of this file, and support more features
 #  of Slack are also welcome.
 #  --------------------------------------------------------------------------
+from logging import getLogger
 
 from slackclient import SlackClient
 
-from vespene.common.logger import Logger
 from vespene.models.build import SUCCESS
 from vespene.common.templates import template
 
-LOG = Logger()
+LOG = getLogger(__name__)
 
 PRE_TEMPLATE = "Vespene Build {{ build.id }} for project \"{{ build.project.name }}\" started"
 SUCCESS_TEMPLATE = "Vespene Build {{ build.id }} for project \"{{ build.project.name }}\" succeeded"
@@ -30,7 +30,7 @@ class Plugin(object):
 
     def execute_hook(self, build, context):
 
-        LOG.debug("executing slack hook")
+        LOG.debug("Executing slack hook")
 
         if context['hook'] == 'pre':
             slack_template = PRE_TEMPLATE

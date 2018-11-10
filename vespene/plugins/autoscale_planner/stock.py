@@ -6,15 +6,12 @@
 from django.utils import timezone
 from datetime import datetime, timedelta
 
-from vespene.common.logger import Logger
 from vespene.common.templates import template
 from vespene.models.build import Build, QUEUED, RUNNING
 
 import math
 import os.path
 import json
-
-LOG = Logger()
 
 
 class Plugin(object):

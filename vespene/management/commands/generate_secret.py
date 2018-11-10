@@ -6,7 +6,6 @@ import os
 import random
 from cryptography import fernet
 from django.core.management.base import BaseCommand
-from vespene.common.logger import Logger
 
 CONTENTS = """
 DJANGO_SECRET_KEY = "%s"
@@ -15,8 +14,6 @@ SYMETRIC_SECRET_KEY = %s
 """
 
 # /usr/bin/python36 manage.py supervisor_generate --path /etc/vespene/supervisord.conf --controller true --workers "name1=2 name2=5" --python /usr/bin/python36
-
-LOG = Logger()
 
 SECRETS = "/etc/vespene/settings.d/secrets.py"
 

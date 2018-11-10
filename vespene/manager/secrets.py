@@ -6,13 +6,10 @@
 #  decode data (if they match), but only the first plugin the settings
 #  configuration will be used to encode.
 #  --------------------------------------------------------------------------
-
-from vespene.common.logger import Logger
 from vespene.common.plugin_loader import PluginLoader
 
-LOG = Logger()
-
 HEADER = "[VESPENE-CLOAKED]"
+
 
 class SecretsManager(object):
 

@@ -4,7 +4,6 @@
 from django.shortcuts import get_object_or_404
 from vespene.views import forms
 from django.http.response import HttpResponse, HttpResponseServerError
-from vespene.common.logger import Logger
 from vespene.models.pipeline import Pipeline
 from vespene.models.project import Project
 from vespene.manager.permissions import PermissionsManager
@@ -13,9 +12,8 @@ from vespene.views.view_helpers import (build_status_icon,
                                   project_controls_icon, template)
 from vespene.views import BaseView
 
-LOG = Logger()
-
 permissions = PermissionsManager()
+
 
 class PipelineView(BaseView):
     model = Pipeline

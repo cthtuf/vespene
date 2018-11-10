@@ -6,11 +6,7 @@
 #  dangeorus things".  This logic is maintained in 'plugins/isolation' and
 #  can include a simple sudo before execution or building inside a container.
 #  --------------------------------------------------------------------------
-
-from vespene.common.logger import Logger
 from vespene.common.plugin_loader import PluginLoader
-
-LOG = Logger()
 
 # =============================================================================
 

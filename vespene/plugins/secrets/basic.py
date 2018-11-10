@@ -11,9 +11,7 @@
 from django.conf import settings
 from cryptography import fernet
 import binascii
-from vespene.common.logger import Logger
 
-LOG = Logger()
 
 class BasicV1(object):
 

@@ -3,6 +3,7 @@
 #  -----------------------------------------------------
 #  runs autoscaling plugins to dynamically size worker pools
 
+from logging import getLogger
 import time
 import traceback
 import subprocess
@@ -15,10 +16,9 @@ from django.utils import timezone
 
 from vespene.models.worker_pool import WorkerPool
 from vespene.models.build import Build
-from vespene.common.logger import Logger
 from vespene.common.plugin_loader import PluginLoader
 
-LOG = Logger()
+LOG = getLogger(__name__)
 
 class Command(BaseCommand):
     help = 'Runs autoscaling logic for one or more configured worker pools'
@@ -32,14 +32,14 @@ class Command(BaseCommand):
         
         worker_pools = WorkerPool.objects.filter(name=pool_name)
         if not worker_pools.exists():
-            LOG.info("worker pool does not exist: %s" % pool_name)
+            LOG.info("Worker pool does not exist: {pool_name}")
             return None
         return worker_pools.first()
 
     def handle_pool(self, worker_pool, planner, executor, force):
 
         if worker_pool is None:
-            LOG.warning("there is no worker pool named %s yet" % worker_pool)
+            LOG.warning(f"There is no worker pool named {worker_pool} yet")
             # probably a provisioning order issue, this will degrade performance but should not be fatal
             # just avoid hammering the system until it exists
             time.sleep(60)
@@ -57,22 +57,18 @@ class Command(BaseCommand):
                 return
 
             parameters = planner.get_parameters(worker_pool)
-            LOG.debug("autoscaling parameters: %s for %s" % (parameters, worker_pool.name))
+            LOG.debug(f"Autoscaling parameters: {parameters} for {worker_pool.name}")
             
             result = executor.scale_worker_pool(worker_pool, parameters)
             
-            LOG.info("autoscaling success for %s" % worker_pool.name)
+            LOG.info(f"Autoscaling success for {worker_pool.name}")
             last_autoscaled = datetime.now(tz=timezone.utc)
 
         except subprocess.CalledProcessError as cpe:
-            
-            LOG.error("autoscaling failed, return code: %s" % cpe.returncode)
+            LOG.exception("Autoscaling failed, return code: {cpe.returncode}")
             autoscale_status = cpe.returncode
-
         except:
-            
-            traceback.print_exc()
-            LOG.error("autoscaling failed for %s" % worker_pool.name)
+            LOG.exception("Autoscaling failed for {worker_pool.name}")
             autoscale_status = 1
 
         finally:
@@ -86,7 +82,7 @@ class Command(BaseCommand):
         sleep_time = options.get('sleep')
         force = options.get('force')
 
-        LOG.info("started...")
+        LOG.info("Started...")
 
         self.plugin_loader = PluginLoader()
         self.planner_plugins = self.plugin_loader.get_autoscaling_planner_plugins()
@@ -108,5 +104,5 @@ class Command(BaseCommand):
             else:
                 time.sleep(sleep)
 
-        LOG.info("exited...")
+        LOG.info("Exited...")
 
