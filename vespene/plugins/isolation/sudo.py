@@ -6,13 +6,11 @@
 #  --------------------------------------------------------------------------
 
 from vespene.workers import commands
-from vespene.common.logger import Logger
 
 import os.path
 import json
 import shutil
 
-LOG = Logger()
 
 class Plugin(object):
 

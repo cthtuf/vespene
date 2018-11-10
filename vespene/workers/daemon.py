@@ -6,7 +6,7 @@
 #  as one that should be stopped, and if so, will self terminate. Logic
 #  is mostly in 'builder.py'.
 #  --------------------------------------------------------------------------
-
+from logging import getLogger
 import time
 import traceback
 from datetime import datetime, timedelta
@@ -16,7 +16,6 @@ from django.db import transaction
 from django.utils import timezone
 from django.db import DatabaseError
 
-from vespene.common.logger import Logger
 from vespene.models.build import (ABORTED, ABORTING, ORPHANED, QUEUED, Build)
 from vespene.models.organization import Organization
 from vespene.models.worker_pool import WorkerPool
@@ -24,7 +23,7 @@ from vespene.workers.builder import BuildLord
 from vespene.workers.scheduler import Scheduler
 from vespene.workers.importer import ImportManager
 
-LOG = Logger()
+LOG = getLogger(__name__)
 
 FLAG_ABORTED_AFTER_ABORTING_MINUTES = 1
 
@@ -51,14 +50,14 @@ class Daemon(object):
         self.ready_to_serve = False
         self.time_counter = datetime.now(tz=timezone.utc)
 
-        LOG.info("serving queue: %s" % self.pool)
+        LOG.info(f"Serving queue: self.pool")
 
     # -------------------------------------------------------------------------
 
     def reload(self):
         pools = WorkerPool.objects.filter(name=self.pool)
         if pools.count() != 1:
-            LOG.error("worker pool does not (yet?) exist: %s" % self.pool)
+            LOG.error(f"Worker pool does not (yet?) exist: {self.pool}")
             self.pool_obj = None
         else:
             self.pool_obj = pools.first()
@@ -131,7 +130,8 @@ class Daemon(object):
             queued_time__lt = threshold
         )
         for orphan in orphaned.all():
-            LOG.warn("build %s was in queued status too long and not picked up by another worker, flagging as orphaned" % orphan.id)
+            LOG.warning(f"Build {orphan.id} was in queued status too long and not picked up by another worker, "
+                        f"flagging as orphaned")
 
         orphaned.update(status=ORPHANED)
 
@@ -142,7 +142,7 @@ class Daemon(object):
             queued_time__lt = threshold
         )
         for orphan in orphaned.all():
-            LOG.warn("build %s was in aborting status too long, assuming successfully aborted" % orphan.id)
+            LOG.warning(f"Build {orphan.id} was in aborting status too long, assuming successfully aborted")
 
         orphaned.update(status=ABORTED)
 
@@ -159,7 +159,7 @@ class Daemon(object):
                     repo_importer.do_import()  
                     org.save()
                 except DatabaseError:
-                    traceback.print_exc()
+                    LOG.exception('Error white importing organilations')
 
     # -------------------------------------------------------------------------
 
@@ -181,12 +181,12 @@ class Daemon(object):
         if build:
             self.time_counter = datetime.now(tz=timezone.utc)
 
-            LOG.debug("building: %d, project: %s" % (build.id, build.project.name))
+            LOG.debug(f"Building: {build.id}, project: {build.project.name}")
             BuildLord(build).go()
 
             self.build_counter = self.build_counter - 1
             if self.build_counter == 0:
-                LOG.debug("requested max build count per worker limit reached, exiting")
+                LOG.debug("Requested max build count per worker limit reached, exiting")
                 sys.exit(0)
 
         else:
@@ -194,5 +194,5 @@ class Daemon(object):
             now = datetime.now(tz=timezone.utc)
             delta = now - self.time_counter
             if (self.max_wait_minutes > 0) and (delta.total_seconds() * 60 > self.max_wait_minutes):
-                LOG.debug("no build has occured in %s minutes, exiting" % self.max_wait_minutes)
+                LOG.debug(f"No build has occured in {self.max_wait_minutes} minutes, exiting")
                 sys.exit(0)

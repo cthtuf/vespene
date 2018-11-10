@@ -6,7 +6,7 @@
 #  served off the same templates and feed in some behavior classes as input.
 #  See views.py for usage.
 #  --------------------------------------------------------------------------
-
+from logging import getLogger
 from urllib.parse import parse_qs
 import traceback
 import html
@@ -21,14 +21,13 @@ from django.utils import timezone
 
 from vespene.version import VERSION
 from vespene.manager import Shared
-from vespene.common.logger import Logger
 from vespene.models.build import (ABORTED, ABORTING, FAILURE, QUEUED, RUNNING,
                                   SUCCESS, UNKNOWN, ORPHANED)
 from vespene.manager.permissions import PermissionsManager
 from vespene.common.templates import template as common_template
 
 permissions = PermissionsManager()
-LOG = Logger()
+LOG = getLogger(__name__)
 
 # ============================================================================================
 
@@ -163,7 +162,7 @@ def generic_new(cfg, request, *args, **kwargs):
             result = process_new(cfg, request)
             return result
         except Exception as e:
-            LOG.error(traceback.format_exc())
+            LOG.exception("Exception in generic_new")
             return HttpResponseServerError(e, content_type='text/plain')
     else:
         return template(request, 'generic_new.j2', get_context(request, cfg, flavor='New', form=cfg.form())) 

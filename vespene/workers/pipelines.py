@@ -14,11 +14,8 @@ import datetime
 
 from django.utils import timezone
 
-from vespene.common.logger import Logger
 from vespene.models.build import BLOCKED, RUNNING, SUCCESS
 from vespene.models.project import Project
-
-LOG = Logger()
 
 # =============================================================================
 

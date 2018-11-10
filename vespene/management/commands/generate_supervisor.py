@@ -8,7 +8,6 @@
 #---------------------------------------------------------------------------
 
 from django.core.management.base import BaseCommand, CommandError
-from vespene.common.logger import Logger
 
 import os
 
@@ -52,7 +51,7 @@ stdout_logfile_maxbytes=50MB
 
 # USAGE: manage.py generate_supervisor --path /etc/vespene/supervisord.conf --workers "name1=2 name2=5" \
 #        --executable `which python` --source=/opt/vespene --gunicorn "--bind 127.0.0.1:8000"
-LOG = Logger()
+
 
 class Command(BaseCommand):
     help = 'Configures supervisor for production deploys. See the setup/ directory for example usage'

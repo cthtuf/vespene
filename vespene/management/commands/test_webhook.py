@@ -5,14 +5,13 @@
 # from GitHub to test the webhook functionality. Of limited use
 # in a real deployment.
 #---------------------------------------------------------------------------
-
+from logging import getLogger
 import requests
 import json
 from django.core.management.base import BaseCommand
 from vespene.models.project import Project
-from vespene.common.logger import Logger
 
-LOG = Logger()
+LOG = getLogger(__name__)
 
 
 WEBHOOK_URL = "webhooks"

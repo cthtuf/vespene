@@ -12,9 +12,6 @@ from django.conf import settings
 
 # from vespene.models.project import Project
 from vespene.models.build import Build
-from vespene.common.logger import Logger
-
-LOG = Logger()
 
 class Command(BaseCommand):
     help = 'Removes old builds and buildroots'

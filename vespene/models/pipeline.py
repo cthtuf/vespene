@@ -3,16 +3,16 @@
 #---------------------------------------------------------------------------
 # pipeline.py - model/behavior code for CI/CD pipelines
 #---------------------------------------------------------------------------
+from logging import getLogger
 
 from django.contrib.auth.models import Group, User
 from django.db import models
 
-from vespene.common.logger import Logger
 from vespene.models import BaseModel
 from vespene.models.project import Project
 from vespene.models.stage import Stage
 
-LOG = Logger()
+LOG = getLogger(__name__)
 
 class Pipeline(models.Model, BaseModel):
 
@@ -59,13 +59,13 @@ class Pipeline(models.Model, BaseModel):
         return self.name    
 
     def start(self):
-        LOG.info("starting pipeline: %s" % self)
+        LOG.info(f"Starting pipeline: {self}")
         if self.stage1 is None:
             raise Exception("stage1 is not configured")
         self.start_stage(self.stage1)
 
     def start_stage(self, stage):
-        LOG.info("starting stage: %s" % stage)
+        LOG.info(f"Starting stage: {stage}")
         if not self.enabled:
             raise Exception("pipeline is disabled")
         projects = Project.objects.filter(stage = stage, pipeline = self).all()
@@ -73,9 +73,9 @@ class Pipeline(models.Model, BaseModel):
             if p.is_startable() and p.pipeline_enabled:
                 p.start()
             elif not p.pipeline_enabled:
-                LOG.info("project is disabled in pipeline: %s" % p)
+                LOG.info(f"Project is disabled in pipeline: {p}")
             else:
-                LOG.info("project does not need to be started: %s" % p)
+                LOG.info(f"Project does not need to be started: {p}")
 
     def next_stage(self, current_stage):
         if self.stage1 is not None and (self.stage1.pk == current_stage.pk):

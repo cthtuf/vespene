@@ -9,10 +9,7 @@
 import os
 import shlex
 
-from vespene.common.logger import Logger
 from vespene.workers import commands
-
-LOG = Logger()
 
 GIT_TYPES = [ "git://", "git+ssh://", "ssh://", "https://", "http://" ]
 

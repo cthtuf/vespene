@@ -6,10 +6,7 @@
 #  sources.
 #  --------------------------------------------------------------------------
 
-from vespene.common.logger import Logger
 from vespene.common.plugin_loader import PluginLoader
-
-LOG = Logger()
 
 class OutputManager(object):
 

@@ -8,13 +8,10 @@
 #  --------------------------------------------------------------------------
 
 from vespene.workers import commands
-from vespene.common.logger import Logger
 from vespene.common.templates import template
 
 import os.path
 import json
-
-LOG = Logger()
 
 CONTAINER_TEMPLATE = """
 FROM {{ container_base_image }}

@@ -4,7 +4,7 @@
 #  __init__.py - common code for all view subclasses and a few top level
 #  view routes, which we want to minimize
 #  --------------------------------------------------------------------------
-
+from logging import getLogger
 import traceback
 from urllib.parse import parse_qs
 import html
@@ -14,14 +14,14 @@ from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 
 from vespene.views import forms
-from vespene.common.logger import Logger
 from vespene.manager.permissions import PermissionsManager
 from vespene.views.view_helpers import (generic_delete, generic_detail,
                                   generic_edit, generic_list, generic_new)
 from vespene.manager.webhooks import Webhooks
 
-LOG = Logger()
+LOG = getLogger(__name__)
 permissions = PermissionsManager()
+
 
 class BaseView(object):
     """
@@ -137,9 +137,8 @@ def webhook_post(request, *args, **kwargs):
         if token is not None:
             token = token[0]
         Webhooks(request, token).handle()
-    except Exception as e:
-        traceback.print_exc()
-        LOG.error("error processing webhook: %s" % str(e))
+    except Exception:
+        LOG.exception("Error processing webhook")
         return HttpResponseServerError("webhook processing error")
 
     return HttpResponse("ok", content_type="text/plain")

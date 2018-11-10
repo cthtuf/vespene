@@ -7,18 +7,18 @@
 #---------------------------------------------------------------------------
 
 import json
+from logging import getLogger
 
 from django.contrib.auth.models import Group, User
 from django.db import models
 
 from vespene.manager import Shared
-from vespene.common.logger import Logger
 from vespene.models import BaseModel, as_dict
 from vespene.models.build import QUEUED, RUNNING, UNKNOWN
 from vespene.manager.permissions import PermissionsManager
 
 permissions = PermissionsManager()
-LOG = Logger()
+LOG = getLogger(__name__)
 
 DEFAULT_SCRIPT = """#!/bin/bash
 echo "replace this section"
@@ -130,12 +130,12 @@ class Project(models.Model, BaseModel):
 
     def start(self, pipeline_parent_build=None):
         from vespene.manager import jobkick
-        LOG.info("starting project: %s" % self)
+        LOG.info(f"Starting project: {self}")
         jobkick.start_project(self, pipeline_parent_build=pipeline_parent_build)
 
     def stop(self):
         from vespene.manager import jobkick
-        LOG.info("stopping project: %s" % self)
+        LOG.info(f"Stopping project: {self}")
         jobkick.stop_project(self)
 
        

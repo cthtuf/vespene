@@ -11,13 +11,12 @@ from django.contrib.auth.models import Group, User
 from django.db import models
 
 from vespene.manager import Shared
-from vespene.common.logger import Logger
 from vespene.models import BaseModel, as_dict
 from vespene.models.build import QUEUED, RUNNING, UNKNOWN
 from vespene.manager.permissions import PermissionsManager
 
 permissions = PermissionsManager()
-LOG = Logger()
+
 
 class Organization(models.Model, BaseModel):
     class Meta:
