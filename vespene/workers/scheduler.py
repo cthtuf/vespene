@@ -8,13 +8,10 @@
 from datetime import datetime, timedelta
 from django.utils import timezone
 
-from vespene.common.logger import Logger
 from vespene.models.build import Build, QUEUED
 from vespene.models.project import Project
 from vespene.manager import jobkick
 from datetime import datetime
-
-LOG = Logger()
 
 # =============================================================================
 

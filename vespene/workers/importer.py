@@ -21,7 +21,6 @@ from django.db import transaction
 from django.db import DatabaseError
 from django.db.utils import IntegrityError
 
-from vespene.common.logger import Logger
 from vespene.common.plugin_loader import PluginLoader
 from vespene.models.build import Build, RUNNING, SUCCESS, FAILURE
 from vespene.models.project import Project
@@ -29,8 +28,6 @@ from vespene.models.worker_pool import WorkerPool
 from vespene.models.pipeline import Pipeline
 from vespene.models.stage import Stage
 from vespene.workers import commands
-
-LOG = Logger()
 
 # =============================================================================
 

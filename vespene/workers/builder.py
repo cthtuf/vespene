@@ -5,8 +5,8 @@
 #  once they have been queued by jobkick.py (on the view side) and picked
 #  up by a worker (daemon.py).
 #  --------------------------------------------------------------------------
-
 import datetime
+from logging import getLogger
 import traceback
 import os
 
@@ -20,10 +20,9 @@ from vespene.workers.pipelines import PipelineManager
 from vespene.workers.isolation import IsolationManager
 from vespene.workers.registration import RegistrationManager
 from vespene.workers import commands
-from vespene.common.logger import Logger
 from vespene.models.build import SUCCESS, FAILURE, RUNNING
 
-LOG = Logger()
+LOG = getLogger(__name__)
 
 # =============================================================================
 
@@ -114,7 +113,7 @@ class BuildLord(object):
         Record a successful build.
         """
 
-        LOG.debug("flagging build as successful")
+        LOG.debug("Flagging build as successful")
         self.build.status = SUCCESS
         self.build.save()
         self.project.last_successful_build = self.build
@@ -127,7 +126,7 @@ class BuildLord(object):
         Record a failed build.
         """
 
-        LOG.debug("flagging build as failure")
+        LOG.debug("Flagging build as failure")
         self.build.append_output(str(e))
         self.build.status = FAILURE
         self.build.save()
@@ -139,7 +138,7 @@ class BuildLord(object):
         Whether successful or not, finish recording the build.
         """
 
-        LOG.debug("flagging build as done")
+        LOG.debug("Flagging build as done")
         self.project.last_build = self.build
         self.build.end_time = datetime.datetime.now(tz=timezone.utc)
         self.project.active_build = None
@@ -160,8 +159,7 @@ class BuildLord(object):
 
         except Exception as e:
 
-            LOG.error("an error occurred")
-            traceback.print_exc()
+            LOG.exception("An error occurred")
             self.build.status = FAILURE
             if self.build.return_code is None:
                 self.build.return_code = -1

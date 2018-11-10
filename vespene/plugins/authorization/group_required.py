@@ -11,10 +11,8 @@
 from django.db.models import Q
 from django.core.exceptions import ValidationError
 from django.contrib import messages
-from vespene.common.logger import Logger
 from vespene.manager import Shared
 
-LOG = Logger()
 
 class Plugin(object):
 

@@ -10,10 +10,9 @@ from django.contrib.auth.models import Group, User
 from django.db import models
 from vespene.common.secrets import SecretsManager
 from vespene.models import BaseModel
-from vespene.common.logger import Logger
 
-LOG = Logger()
 secrets = SecretsManager()
+
 
 class SshKey(models.Model, BaseModel):
 

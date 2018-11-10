@@ -6,11 +6,8 @@
 #  Implemented by deferring to plugins in 'plugins/authorization' as configured
 #  in settings.
 #  --------------------------------------------------------------------------
-
-from vespene.common.logger import Logger
 from vespene.common.plugin_loader import PluginLoader
 
-LOG = Logger()
 
 class PermissionsManager(object):
 

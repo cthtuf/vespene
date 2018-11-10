@@ -6,9 +6,6 @@
 #  the build script is just run as an arbitrary script.
 #  --------------------------------------------------------------------------
 
-from vespene.common.logger import Logger
-
-LOG = Logger()
 
 class Plugin(object):
 

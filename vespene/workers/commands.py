@@ -5,6 +5,7 @@
 #  --------------------------------------------------------------------------
 
 import io
+from logging import getLogger
 import subprocess
 import tempfile
 import re
@@ -19,11 +20,10 @@ ansi_escape = re.compile(r'(\x9B|\x1B\[)[0-?]*[ -/]*[@-~]')
 
 import jinja2
 
-from vespene.common.logger import Logger
 from vespene.common.templates import Environment
 from vespene.models.build import ABORTED, ABORTING, FAILURE, Build
 
-LOG = Logger()
+LOG = getLogger(__name__)
 
 def check_if_can_continue(build):
     polled = Build.objects.get(pk=build.id)
@@ -85,7 +85,7 @@ def execute_command(build, command, input_text=None, env=None, log_command=True,
         env['SSH_AUTH_SOCK'] = sock
 
     if log_command:
-        LOG.debug("executing: %s" % command)
+        LOG.debug("Executing: {command}")
         if build:
             build.append_message(command)
 

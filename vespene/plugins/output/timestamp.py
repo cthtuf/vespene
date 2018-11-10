@@ -6,11 +6,9 @@
 #  --------------------------------------------------------------------------
 
 from vespene.workers import commands
-from vespene.common.logger import Logger
 from datetime import datetime
 from django.utils import timezone
 
-LOG = Logger()
 
 class Plugin(object):
 

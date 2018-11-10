@@ -7,11 +7,12 @@
 #  --------------------------------------------------------------------------
 
 import json
-from vespene.common.logger import Logger
+from logging import getLogger
+
 from vespene.manager.jobkick import start_project
 from vespene.models.project import Project
 
-LOG = Logger()
+LOG = getLogger(__name__)
 
 # ===============================================================================================
 
@@ -52,7 +53,7 @@ class Webhooks(object):
         qs = Project.objects.filter(webhook_enabled=True, repo_url__in=possibles).all()
         for project in qs.all():
             if project.webhook_token is None or project.webhook_token == self.token:
-                LOG.info("webhook starting project: %s" % project.id)
+                LOG.info(f"Webhook starting project: {project.id}")
                 if project.repo_branch is not None:
                     ref = self.content.get('ref')
                     if ref:
@@ -63,6 +64,6 @@ class Webhooks(object):
                         # builds - if we add special handling, we should consider SVN
                         # doesn't really have branches
                         if project.repo_branch and branch and branch != project.repo_branch:
-                            LOG.info("skipping, references another branch")
+                            LOG.info("Skipping, references another branch")
                             continue
                 start_project(project)

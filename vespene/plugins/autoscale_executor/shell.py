@@ -2,13 +2,13 @@
 #  License: Apache License Version 2.0 + Commons Clause
 #  -----------------------------------------------------
 #  autoscales a worker pool using determined parameters
-
+from logging import getLogger
 import subprocess
 import sys
-from vespene.common.logger import Logger
 from vespene.common.templates import template
 
-LOG = Logger()
+LOG = getLogger(__name__)
+
 
 class Plugin(object):
 
@@ -18,7 +18,7 @@ class Plugin(object):
     def invoke(self, worker_pool, cmd):
         with subprocess.Popen(cmd, stdout=subprocess.PIPE, bufsize=1, shell=True, universal_newlines=True) as p:
             for line in p.stdout:
-                LOG.debug("%s | %s" % (worker_pool.name, line))
+                LOG.debug("f{worker_pool.name} | {line}")
         if p.returncode != 0:
             raise CalledProcessError(p.returncode, p.args)
            

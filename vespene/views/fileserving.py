@@ -18,9 +18,7 @@ from django.conf import settings
 from django.core.exceptions import PermissionDenied
 
 from vespene.models.build import Build
-from vespene.common.logger import Logger
 
-LOG = Logger()
 
 def legal_path(path):
     segments = os.path.split(path)

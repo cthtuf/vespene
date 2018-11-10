@@ -5,12 +5,14 @@
 # mostly used for development testing and can be upgraded.
 #---------------------------------------------------------------------------
 
+from logging import getLogger
+
 from django.core.management.base import BaseCommand, CommandError
 from vespene.models.project import Project
 from vespene import jobkick
-from vespene.common.logger import Logger
 
-LOG = Logger()
+LOG = getLogger(__name__)
+
 
 class Command(BaseCommand):
     help = 'Starts and stops builds for a given project'

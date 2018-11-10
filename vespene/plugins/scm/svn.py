@@ -11,10 +11,8 @@
 
 import shlex
 
-from vespene.common.logger import Logger
 from vespene.workers import commands
 
-LOG = Logger()
 
 class Plugin(object):
 
